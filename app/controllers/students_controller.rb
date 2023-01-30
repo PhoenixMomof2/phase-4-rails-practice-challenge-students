@@ -4,7 +4,6 @@ class StudentsController < ApplicationController
     render json: Student.all, status: :ok
   end
 
-
   def show
     student = find_student
     if student
@@ -15,8 +14,12 @@ class StudentsController < ApplicationController
   end
 
   def create
-    student = Student.create(student_params)
-    render json: student, status: :created
+    student = Student.new(student_params)
+    if student.save
+      render json: student, status: :created
+    else
+      render json: { error: "Student does not meet age requirement" }, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -25,7 +28,7 @@ class StudentsController < ApplicationController
       student.update(student_params)
       render json: student, status: :accepted
     else
-      render json: { error: "Student not found"}, status: :not_found
+      render json: { error: "Student not found" }, status: :not_found
     end
   end
 

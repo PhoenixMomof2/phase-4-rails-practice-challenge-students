@@ -1,7 +1,7 @@
 class InstructorsController < ApplicationController
 
   def index
-    render json: Instructor.all, status: :ok
+    render json: Instructor.all, include: :students, status: :ok
   end
 
   def show
